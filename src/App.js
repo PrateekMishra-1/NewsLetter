@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios'; // Import axios
 import './App.css';
 
 function App() {
+  const NEWS_API_KEY = "98ffc7490eba4bf6968ef2e6bce7ba42"; // Replace with your NewsAPI key
+
   const [company, setCompany] = useState('');
   const [prediction, setPrediction] = useState('');
   const [news, setNews] = useState([]);
@@ -25,7 +28,7 @@ function App() {
     { name: 'Suzlon Energy', symbol: 'SUZLON' },
   ];
 
-  // Mock function to fetch stock prices (replace with real API call)
+  // Function to fetch stock prices (Mock)
   const fetchStockPrices = async () => {
     const mockPrices = {
       RELIANCE: 2500,
@@ -54,21 +57,35 @@ function App() {
 
     setLoading(true);
 
-    // Simulate API call (replace with actual backend integration)
-    setTimeout(() => {
-      const mockPrediction = Math.random() > 0.5 ? 'Stock will likely go up 📈' : 'Stock will likely go down 📉';
-      const mockNews = [
-        { title: `${company} announces record profits`, sentiment: 'Positive' },
-        { title: `${company} faces regulatory scrutiny`, sentiment: 'Negative' },
-        { title: `${company} launches new product`, sentiment: 'Positive' },
-        { title: `${company} CEO steps down`, sentiment: 'Negative' },
-        { title: `${company} partners with tech giant`, sentiment: 'Positive' },
-      ];
-      setPrediction(mockPrediction);
-      setNews(mockNews);
+    try {
+      // Mock prediction logic
+      const mockPrediction =
+        Math.random() > 0.5 ? 'Stock will likely go up 📈' : 'Stock will likely go down 📉';
+
+      setPrediction(`${mockPrediction}`);
+
+      // Fetch news data from NewsAPI
+      const newsResponse = await axios.get(
+        `https://newsapi.org/v2/everything?q=${company}&sortBy=popularity&apiKey=${NEWS_API_KEY}`
+      );
+
+      if (newsResponse.data.articles && newsResponse.data.articles.length > 0) {
+        const newsArticles = newsResponse.data.articles.slice(0, 5).map(article => ({
+          title: article.title, // Only include the title
+        }));
+        setNews(newsArticles);
+      } else {
+        setNews([{ title: 'No news articles found.' }]);
+      }
+
+      setShowModal(true);
+    } catch (error) {
+      console.error("Error fetching news data:", error);
+      setPrediction("Error fetching news data. Try again later.");
+      setNews([{ title: 'Failed to fetch news articles.' }]);
+    } finally {
       setLoading(false);
-      setShowModal(true); // Show the modal
-    }, 2000);
+    }
   };
 
   const closeModal = () => {
@@ -77,7 +94,7 @@ function App() {
 
   return (
     <div className="container">
-      <h1 className="main-heading">Stock Prediction App</h1>
+      <h1 className="main-heading">Stock News App</h1>
       <div className="search-bar">
         <input
           type="text"
@@ -139,10 +156,7 @@ function App() {
             <div className="news-list">
               {news.map((article, index) => (
                 <div key={index} className="news-item">
-                  <p>{article.title}</p>
-                  <span className={`sentiment ${article.sentiment.toLowerCase()}`}>
-                    {article.sentiment}
-                  </span>
+                  <p>{article.title}</p> {/* Only display the title */}
                 </div>
               ))}
             </div>
