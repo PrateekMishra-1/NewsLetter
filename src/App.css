@@ -1,14 +1,9 @@
 /* General Styles */
-
 body {
   margin: 0;
   font-family: 'Arial', sans-serif;
   background: linear-gradient(135deg, #000428, #004e92); /* Dark blue gradient */
   color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
   overflow-y: auto; /* Allow vertical scrolling */
 }
 
@@ -22,11 +17,10 @@ body {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   max-width: 1200px;
   width: 90%;
+  margin: 2rem auto; /* Center the container horizontally with some margin */
   animation: fadeIn 1.5s ease-in-out;
   overflow-y: auto;  /* Scrollable container */
 }
-
-
 
 /* Main Heading */
 .main-heading {
@@ -254,6 +248,7 @@ body {
   width: 80%;
   max-width: 600px;
   animation: slideIn 0.5s ease-in-out;
+  position: relative; /* Ensure the close button is positioned relative to the modal */
 }
 
 .modal h3 {
@@ -271,6 +266,7 @@ body {
   position: absolute;
   top: 1rem;
   right: 1rem;
+  transition: color 0.3s ease;
 }
 
 .close-modal:hover {
@@ -352,4 +348,76 @@ body {
   50% {
     transform: translateY(-10px);
   }
+}
+/* Graph Section */
+.stock-graph {
+  margin-top: 2rem;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 1s ease-in-out;
+}
+
+.stock-graph h3 {
+  font-size: 1.5rem;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* Recharts Custom Styling */
+.recharts-wrapper {
+  margin: 0 auto;
+}
+
+.recharts-cartesian-grid line {
+  stroke: rgba(255, 255, 255, 0.1); /* Light grid lines */
+}
+
+.recharts-x-axis,
+.recharts-y-axis {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7); /* Light text for axis labels */
+}
+
+.recharts-tooltip {
+  background: rgba(0, 0, 0, 0.9) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 0.5rem 1rem !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+}
+
+.recharts-tooltip-label {
+  color: #fff !important;
+  font-weight: bold !important;
+}
+
+.recharts-tooltip-item {
+  color: #fff !important;
+}
+
+.recharts-legend {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.recharts-legend-item {
+  color: #fff !important;
+  font-size: 0.9rem;
+}
+
+.recharts-line {
+  stroke-width: 2px;
+}
+
+/* Custom Line Colors */
+.recharts-line-positive {
+  stroke: #4caf50; /* Green for positive trends */
+}
+
+.recharts-line-negative {
+  stroke: #f44336; /* Red for negative trends */
 }
